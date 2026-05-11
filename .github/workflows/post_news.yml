@@ -1,0 +1,30 @@
+name: Post News to Twitter
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install libraries
+        run: pip install tweepy feedparser
+
+      - name: Run the bot
+        run: python post_news.py
+        env:
+          TWITTER_KEY: ${{ secrets.TWITTER_KEY }}
+          TWITTER_SECRET: ${{ secrets.TWITTER_SECRET }}
+          TWITTER_TOKEN: ${{ secrets.TWITTER_TOKEN }}
+          TWITTER_TOKEN_SECRET: ${{ secrets.TWITTER_TOKEN_SECRET }}
